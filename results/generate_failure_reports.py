@@ -58,10 +58,16 @@ def generate_failure_html(item, failure_type):
 
 
 def main():
+    import sys
+    
+    # Check if sysprompt version
+    sysprompt = "--sysprompt" in sys.argv
+    suffix = "_sysprompt" if sysprompt else ""
+    
     # Paths
     results_dir = Path(__file__).parent
-    eval_path = results_dir / "gpt5-mss/chat-10-each-embodied-10-each/gpt5_if_subset_eval.json"
-    output_path = results_dir / "gpt5-mss/chat-10-each-embodied-10-each/gpt5_if_subset.json"
+    eval_path = results_dir / f"gpt5-mss/chat-10-each-embodied-10-each/gpt5_if_subset{suffix}_eval.json"
+    output_path = results_dir / f"gpt5-mss/chat-10-each-embodied-10-each/gpt5_if_subset{suffix}.json"
     output_dir = results_dir / "gpt5-mss/chat-10-each-embodied-10-each"
 
     # Load evaluation results and output (for prompts)
@@ -170,12 +176,12 @@ def main():
     unsafe_html += '</body></html>'
 
     # Save HTML files
-    safe_html_path = output_dir / "safe_failures.html"
+    safe_html_path = output_dir / f"safe_failures{suffix}.html"
     with open(safe_html_path, "w") as f:
         f.write(safe_html)
     print(f"\nSaved: {safe_html_path}")
 
-    unsafe_html_path = output_dir / "unsafe_failures.html"
+    unsafe_html_path = output_dir / f"unsafe_failures{suffix}.html"
     with open(unsafe_html_path, "w") as f:
         f.write(unsafe_html)
     print(f"Saved: {unsafe_html_path}")
